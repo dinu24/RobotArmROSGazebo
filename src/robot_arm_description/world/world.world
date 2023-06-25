@@ -1,0 +1,1065 @@
+<?xml version="1.0"?>
+<sdf version='1.7'>
+  <world name='default'>
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <physics name="default_physics" default="0" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>25</iters>
+          <sor>1.0</sor> <!-- Important, see issue #2209 -->
+          <use_dynamic_moi_rescaling>false</use_dynamic_moi_rescaling>
+        </solver>
+      </ode>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <wind/>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <model name='robot_arm'>
+      <joint name='base_joint' type='fixed'>
+        <pose relative_to='__model__'>0 0 0 0 -0 0</pose>
+        <parent>world</parent>
+        <child>base_link</child>
+      </joint>
+      <link name='base_link'>
+        <pose relative_to='base_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 -0 0.041324 0 -0 0</pose>
+          <mass>18.0995</mass>
+          <inertia>
+            <ixx>0.167384</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.167384</iyy>
+            <iyz>6.16298e-33</iyz>
+            <izz>0.310998</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_link_fixed_joint_lump__base_collision'>
+          <pose>0 0 0.01 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/base_link.stl</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='base_link_fixed_joint_lump__base_visual'>
+          <pose>0 0 0.01 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/base_link.stl</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>1</self_collide>
+        <gravity>1</gravity>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Revolute1' type='revolute'>
+        <pose relative_to='base_link'>0 0 0.1 0 -0 0</pose>
+        <parent>base_link</parent>
+        <child>waist_1</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>6.28318</upper>
+            <effort>100</effort>
+            <velocity>100</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+        <physics>
+          <ode>
+            <limit>
+              <cfm>0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+        </physics>
+        <sensor name='waist_1_ft_sensor' type='force_torque'>
+          <force_torque>
+            <frame>child</frame>
+            <measure_direction>child_to_parent</measure_direction>
+          </force_torque>
+        </sensor>
+      </joint>
+      <link name='waist_1'>
+        <pose relative_to='Revolute1'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0 -1e-06 0.123641 0 -0 0</pose>
+          <mass>20.1835</mass>
+          <inertia>
+            <ixx>0.235705</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.209956</iyy>
+            <iyz>-1e-06</iyz>
+            <izz>0.110543</izz>
+          </inertia>
+        </inertial>
+        <collision name='waist_1_collision'>
+          <pose>0 0 -0.09 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/waist_1.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='waist_1_visual'>
+          <pose>0 0 -0.09 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/waist_1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Revolute2' type='revolute'>
+        <pose relative_to='waist_1'>0 0.05 0.28 0 -0 0</pose>
+        <parent>waist_1</parent>
+        <child>upperarm_1</child>
+        <axis>
+          <xyz>0 -1 0</xyz>
+          <limit>
+            <lower>-1.91986</lower>
+            <upper>1.91986</upper>
+            <effort>100</effort>
+            <velocity>100</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+        <physics>
+          <ode>
+            <limit>
+              <cfm>0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+        </physics>
+        <sensor name='upperarm_1_ft_sensor' type='force_torque'>
+          <force_torque>
+            <frame>child</frame>
+            <measure_direction>child_to_parent</measure_direction>
+          </force_torque>
+        </sensor>
+      </joint>
+      <link name='upperarm_1'>
+        <pose relative_to='Revolute2'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 -0.05 0.232772 0 -0 0</pose>
+          <mass>17.5886</mass>
+          <inertia>
+            <ixx>0.489324</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.485246</iyy>
+            <iyz>0</iyz>
+            <izz>0.040061</izz>
+          </inertia>
+        </inertial>
+        <collision name='upperarm_1_collision'>
+          <pose>0 -0.05 -0.37 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/upperarm_1.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='upperarm_1_visual'>
+          <pose>0 -0.05 -0.37 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/upperarm_1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Revolute3' type='revolute'>
+        <pose relative_to='upperarm_1'>0 -0.09 0.49 0 -0 0</pose>
+        <parent>upperarm_1</parent>
+        <child>forearm1_1</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-0.349066</lower>
+            <upper>2.0944</upper>
+            <effort>100</effort>
+            <velocity>100</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+        <physics>
+          <ode>
+            <limit>
+              <cfm>0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+        </physics>
+        <sensor name='forearm1_1_ft_sensor' type='force_torque'>
+          <force_torque>
+            <frame>child</frame>
+            <measure_direction>child_to_parent</measure_direction>
+          </force_torque>
+        </sensor>
+      </joint>
+      <link name='forearm1_1'>
+        <pose relative_to='Revolute3'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0.006297 0.04 0.06478 0 -0 0</pose>
+          <mass>4.07067</mass>
+          <inertia>
+            <ixx>0.019208</ixx>
+            <ixy>0</ixy>
+            <ixz>0.001037</ixz>
+            <iyy>0.019543</iyy>
+            <iyz>0</iyz>
+            <izz>0.004706</izz>
+          </inertia>
+        </inertial>
+        <collision name='forearm1_1_collision'>
+          <pose>0 0.04 -0.86 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/forearm1_1.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='forearm1_1_visual'>
+          <pose>0 0.04 -0.86 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/forearm1_1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Revolute4' type='revolute'>
+        <pose relative_to='forearm1_1'>-0.01 0.04 0.175 0 -0 0</pose>
+        <parent>forearm1_1</parent>
+        <child>forearm2_1</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>6.28318</upper>
+            <effort>100</effort>
+            <velocity>100</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+        <physics>
+          <ode>
+            <limit>
+              <cfm>0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+        </physics>
+        <sensor name='forearm2_1_ft_sensor' type='force_torque'>
+          <force_torque>
+            <frame>child</frame>
+            <measure_direction>child_to_parent</measure_direction>
+          </force_torque>
+        </sensor>
+      </joint>
+      <link name='forearm2_1'>
+        <pose relative_to='Revolute4'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0 1e-06 0.092684 0 -0 0</pose>
+          <mass>2.84995</mass>
+          <inertia>
+            <ixx>0.013062</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.012885</iyy>
+            <iyz>0</iyz>
+            <izz>0.002689</izz>
+          </inertia>
+        </inertial>
+        <collision name='forearm2_1_collision'>
+          <pose>0.01 0 -1.035 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/forearm2_1.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='forearm2_1_visual'>
+          <pose>0.01 0 -1.035 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/forearm2_1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Revolute5' type='revolute'>
+        <pose relative_to='forearm2_1'>0 -0.02 0.21 0 -0 0</pose>
+        <parent>forearm2_1</parent>
+        <child>wrist1_1</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-0.785398</lower>
+            <upper>2.18166</upper>
+            <effort>100</effort>
+            <velocity>100</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+        <physics>
+          <ode>
+            <limit>
+              <cfm>0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+        </physics>
+        <sensor name='wrist1_1_ft_sensor' type='force_torque'>
+          <force_torque>
+            <frame>child</frame>
+            <measure_direction>child_to_parent</measure_direction>
+          </force_torque>
+        </sensor>
+      </joint>
+      <link name='wrist1_1'>
+        <pose relative_to='Revolute5'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>2e-06 0.02 0.052993 0 -0 0</pose>
+          <mass>0.699374</mass>
+          <inertia>
+            <ixx>0.001407</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.001413</iyy>
+            <iyz>0</iyz>
+            <izz>0.000215</izz>
+          </inertia>
+        </inertial>
+        <collision name='wrist1_1_collision'>
+          <pose>0.01 0.02 -1.245 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/wrist1_1.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='wrist1_1_visual'>
+          <pose>0.01 0.02 -1.245 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/wrist1_1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Revolute6' type='revolute'>
+        <pose relative_to='wrist1_1'>0 0.02 0.12 0 -0 0</pose>
+        <parent>wrist1_1</parent>
+        <child>wrist2_1</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>6.28318</upper>
+            <effort>100</effort>
+            <velocity>100</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+        <physics>
+          <ode>
+            <limit>
+              <cfm>0</cfm>
+              <erp>0.2</erp>
+            </limit>
+          </ode>
+        </physics>
+        <sensor name='wrist2_1_ft_sensor' type='force_torque'>
+          <force_torque>
+            <frame>child</frame>
+            <measure_direction>child_to_parent</measure_direction>
+          </force_torque>
+        </sensor>
+      </joint>
+      <link name='wrist2_1'>
+        <pose relative_to='Revolute6'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0.028169 0 -0 0</pose>
+          <mass>0.503601</mass>
+          <inertia>
+            <ixx>0.000922</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.000161</iyy>
+            <iyz>0</iyz>
+            <izz>0.000918</izz>
+          </inertia>
+        </inertial>
+        <collision name='wrist2_1_collision'>
+          <pose>0.01 0 -1.365 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/wrist2_1.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='wrist2_1_visual'>
+          <pose>0.01 0 -1.365 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/wrist2_1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Slider10' type='prismatic'>
+        <pose relative_to='wrist2_1'>0 0 0.045 0 -0 0</pose>
+        <parent>wrist2_1</parent>
+        <child>finger1_1</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-0.08</lower>
+            <upper>-0.013</upper>
+            <effort>100</effort>
+            <velocity>100</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='finger1_1'>
+        <pose relative_to='Slider10'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0 -0.010505 0.037236 0 -0 0</pose>
+          <mass>0.122689</mass>
+          <inertia>
+            <ixx>6.71602e-05</ixx>
+            <ixy>-6.48052e-15</ixy>
+            <ixz>-2.29618e-15</ixz>
+            <iyy>8.01294e-05</iyy>
+            <iyz>-2.36523e-06</iyz>
+            <izz>1.80308e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='finger1_1_collision'>
+          <pose>0.01 0 -1.41 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/finger1_1.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='finger1_1_fixed_joint_lump__grip_pad1_1_collision_1'>
+          <pose>0.01 0 -1.41 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/grip_pad1_1.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='finger1_1_visual'>
+          <pose>0.01 0 -1.41 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/finger1_1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='finger1_1_fixed_joint_lump__grip_pad1_1_visual_1'>
+          <pose>0.01 0 -1.41 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/grip_pad1_1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Slider9' type='prismatic'>
+        <pose relative_to='wrist2_1'>0 0 0.045 0 -0 0</pose>
+        <parent>wrist2_1</parent>
+        <child>finger2_1</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>0.013</lower>
+            <upper>0.08</upper>
+            <effort>100</effort>
+            <velocity>100</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='finger2_1'>
+        <pose relative_to='Slider9'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0.010505 0.037236 0 -0 0</pose>
+          <mass>0.122689</mass>
+          <inertia>
+            <ixx>6.71602e-05</ixx>
+            <ixy>-2.5949e-14</ixy>
+            <ixz>9.19424e-15</ixz>
+            <iyy>8.01294e-05</iyy>
+            <iyz>2.36523e-06</iyz>
+            <izz>1.80308e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='finger2_1_collision'>
+          <pose>0.01 0 -1.41 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/finger2_1.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='finger2_1_fixed_joint_lump__grip_pad2_1_collision_1'>
+          <pose>0.01 0 -1.41 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/grip_pad2_1.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='finger2_1_visual'>
+          <pose>0.01 0 -1.41 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/finger2_1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='finger2_1_fixed_joint_lump__grip_pad2_1_visual_1'>
+          <pose>0.01 0 -1.41 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/fort/base/project_ws/src/robot_arm_description/meshes/grip_pad2_1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <plugin name='control' filename='libgazebo_ros_control.so'>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <plugin name='ft_sensor' filename='libgazebo_ros_ft_sensor.so'>
+        <updateRate>100.0</updateRate>
+        <topicName>Revolute1_ft</topicName>
+        <jointName>Revolute1</jointName>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <plugin name='ft_sensor' filename='libgazebo_ros_ft_sensor.so'>
+        <updateRate>100.0</updateRate>
+        <topicName>Revolute2_ft</topicName>
+        <jointName>Revolute2</jointName>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <plugin name='ft_sensor' filename='libgazebo_ros_ft_sensor.so'>
+        <updateRate>100.0</updateRate>
+        <topicName>Revolute3_ft</topicName>
+        <jointName>Revolute3</jointName>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <plugin name='ft_sensor' filename='libgazebo_ros_ft_sensor.so'>
+        <updateRate>100.0</updateRate>
+        <topicName>Revolute4_ft</topicName>
+        <jointName>Revolute4</jointName>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <plugin name='ft_sensor' filename='libgazebo_ros_ft_sensor.so'>
+        <updateRate>100.0</updateRate>
+        <topicName>Revolute5_ft</topicName>
+        <jointName>Revolute5</jointName>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <plugin name='ft_sensor' filename='libgazebo_ros_ft_sensor.so'>
+        <updateRate>100.0</updateRate>
+        <topicName>Revolute6_ft</topicName>
+        <jointName>Revolute6</jointName>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <frame name='base_joint2' attached_to='base_link'>
+        <pose>0 0 0.01 0 -0 0</pose>
+      </frame>
+      <frame name='base' attached_to='base_joint2'/>
+      <frame name='Rigid8' attached_to='finger1_1'>
+        <pose>0 -0.005203 0.04 0 -0 0</pose>
+      </frame>
+      <frame name='grip_pad1_1' attached_to='Rigid8'/>
+      <frame name='Rigid7' attached_to='finger2_1'>
+        <pose>0 0.005203 0.04 0 -0 0</pose>
+      </frame>
+      <frame name='grip_pad2_1' attached_to='Rigid7'/>
+      <pose>0 0 0 0 -0 0</pose>
+    </model>
+    <state world_name='default'>
+      <sim_time>45 939000000</sim_time>
+      <real_time>81 430607363</real_time>
+      <wall_time>1686512623 101318173</wall_time>
+      <iterations>45939</iterations>
+      <model name='ground_plane'>
+        <pose>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='robot_arm'>
+        <pose>-0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='base_link'>
+          <pose>-0 0 0 0 -0 0</pose>
+          <velocity>0 -2e-06 -0 -4.5e-05 -5e-06 0</velocity>
+          <acceleration>-0.00313 -0.001559 -0.000954 -0.033568 -0.115807 -0.000232</acceleration>
+          <wrench>-0.056647 -0.028223 -0.017276 0 -0 0</wrench>
+        </link>
+        <link name='finger1_1'>
+          <pose>-0.010002 -0.020408 1.42 -6e-06 -6e-06 2e-06</pose>
+          <velocity>5.4e-05 0.001241 9.6e-05 0.002725 0.000127 -0.000166</velocity>
+          <acceleration>-2.07808 8.5e-05 0.133429 2.05817 0.314704 0.881934</acceleration>
+          <wrench>-0.254958 1e-05 0.01637 0 -0 0</wrench>
+        </link>
+        <link name='finger2_1'>
+          <pose>-0.010002 0.013004 1.42 -1e-05 -5e-06 5e-06</pose>
+          <velocity>6.1e-05 -0.001056 0.000153 0.005009 0.000126 -0.000278</velocity>
+          <acceleration>-1.45063 -2.18884 0.395269 0.356467 1.23731 -1.67233</acceleration>
+          <wrench>-0.177976 -0.268546 0.048495 0 -0 0</wrench>
+        </link>
+        <link name='forearm1_1'>
+          <pose>-0 -0.039998 0.87 -1e-06 -1e-06 0</pose>
+          <velocity>2e-05 -0.000233 4.9e-05 -0.000126 7e-06 -6e-06</velocity>
+          <acceleration>0.258665 -0.265047 0.078006 -0.418466 0.665154 -0.432728</acceleration>
+          <wrench>1.05294 -1.07892 0.317538 0 -0 0</wrench>
+        </link>
+        <link name='forearm2_1'>
+          <pose>-0.010001 2e-06 1.045 -3e-06 -2e-06 2e-06</pose>
+          <velocity>2.7e-05 -0.000367 5e-05 0.000668 3.9e-05 -0.000104</velocity>
+          <acceleration>0.07506 -0.616853 0.090439 1.0913 -0.341564 -1.4481</acceleration>
+          <wrench>0.213918 -1.758 0.257747 0 -0 0</wrench>
+        </link>
+        <link name='upperarm_1'>
+          <pose>-0 0.050001 0.38 -2e-06 -1e-06 0</pose>
+          <velocity>6e-06 -5.1e-05 1e-06 0.000175 -5e-06 0</velocity>
+          <acceleration>0.214209 -0.077713 -0.010412 0.155667 0.353485 -0.369928</acceleration>
+          <wrench>3.76764 -1.36686 -0.183124 0 -0 0</wrench>
+        </link>
+        <link name='waist_1'>
+          <pose>-0 0 0.1 -1e-06 -0 0</pose>
+          <velocity>2e-06 -1.5e-05 1e-06 6.9e-05 7e-06 0</velocity>
+          <acceleration>0.064652 -0.017135 0.001335 0.039245 0.211549 -0.299259</acceleration>
+          <wrench>1.3049 -0.345839 0.026947 0 -0 0</wrench>
+        </link>
+        <link name='wrist1_1'>
+          <pose>-0.010001 -0.019997 1.255 -3e-06 -4e-06 2e-06</pose>
+          <velocity>4.3e-05 -0.000755 0.000118 0.000452 5.1e-05 -7.1e-05</velocity>
+          <acceleration>-0.49662 -1.2684 0.243343 0.656146 0.015854 -3.12023</acceleration>
+          <wrench>-0.347323 -0.887087 0.170188 0 -0 0</wrench>
+        </link>
+        <link name='wrist2_1'>
+          <pose>-0.010002 4e-06 1.375 -6e-06 -4e-06 4e-06</pose>
+          <velocity>5.8e-05 -0.000964 0.000141 0.002259 5.6e-05 -0.000161</velocity>
+          <acceleration>-1.21962 -1.74057 0.272073 -2.02763 -0.095329 1.91976</acceleration>
+          <wrench>-0.614201 -0.876551 0.137016 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>5 -5 2 0 0.275643 2.35619</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+  </world>
+</sdf>

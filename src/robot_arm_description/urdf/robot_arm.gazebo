@@ -1,0 +1,192 @@
+<?xml version="1.0" ?>
+<robot name="robot_arm" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<xacro:property name="body_color" value="Gazebo/Grey" />
+
+<gazebo>
+  <plugin name="control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/</robotNamespace>
+  </plugin>
+</gazebo>
+
+<gazebo reference="base_link">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+  <gravity>true</gravity>
+</gazebo>
+
+<gazebo reference="waist_1">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="upperarm_1">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="forearm1_1">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="forearm2_1">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="wrist1_1">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="wrist2_1">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="grip_pad2_1">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="grip_pad1_1">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="finger2_1">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="finger1_1">
+  <material>${body_color}</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <selfCollide>true</selfCollide>
+</gazebo>
+
+<gazebo reference="Revolute1">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+    <sensor name="waist_1_ft_sensor" type="force_torque">
+      <force_torque>
+        <frame>child</frame>
+        <measure_direction>child_to_parent</measure_direction>
+      </force_torque>
+    </sensor>
+  </gazebo>
+  <gazebo>
+      <plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+          <updateRate>100.0</updateRate>
+          <topicName>Revolute1_ft</topicName>
+          <jointName>Revolute1</jointName>
+      </plugin>
+  </gazebo>
+  
+  <gazebo reference="Revolute2">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+    <sensor name="upperarm_1_ft_sensor" type="force_torque">
+      <force_torque>
+        <frame>child</frame>
+        <measure_direction>child_to_parent</measure_direction>
+      </force_torque>
+    </sensor>
+  </gazebo>
+  <gazebo>
+      <plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+          <updateRate>100.0</updateRate>
+          <topicName>Revolute2_ft</topicName>
+          <jointName>Revolute2</jointName>
+      </plugin>
+  </gazebo>
+  
+  <gazebo reference="Revolute3">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+    <sensor name="forearm1_1_ft_sensor" type="force_torque">
+      <force_torque>
+        <frame>child</frame>
+        <measure_direction>child_to_parent</measure_direction>
+      </force_torque>
+    </sensor>
+  </gazebo>
+  <gazebo>
+      <plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+          <updateRate>100.0</updateRate>
+          <topicName>Revolute3_ft</topicName>
+          <jointName>Revolute3</jointName>
+      </plugin>
+  </gazebo>
+  
+    <gazebo reference="Revolute4">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+    <sensor name="forearm2_1_ft_sensor" type="force_torque">
+      <force_torque>
+        <frame>child</frame>
+        <measure_direction>child_to_parent</measure_direction>
+      </force_torque>
+    </sensor>
+  </gazebo>
+  <gazebo>
+      <plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+          <updateRate>100.0</updateRate>
+          <topicName>Revolute4_ft</topicName>
+          <jointName>Revolute4</jointName>
+      </plugin>
+  </gazebo>
+  
+  <gazebo reference="Revolute5">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+    <sensor name="wrist1_1_ft_sensor" type="force_torque">
+      <force_torque>
+        <frame>child</frame>
+        <measure_direction>child_to_parent</measure_direction>
+      </force_torque>
+    </sensor>
+  </gazebo>
+  <gazebo>
+      <plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+          <updateRate>100.0</updateRate>
+          <topicName>Revolute5_ft</topicName>
+          <jointName>Revolute5</jointName>
+      </plugin>
+  </gazebo>
+  
+<gazebo reference="Revolute6">
+    <disableFixedJointLumping>true</disableFixedJointLumping>
+    <sensor name="wrist2_1_ft_sensor" type="force_torque">
+      <force_torque>
+        <frame>child</frame>
+        <measure_direction>child_to_parent</measure_direction>
+      </force_torque>
+    </sensor>
+  </gazebo>
+  <gazebo>
+      <plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+          <updateRate>100.0</updateRate>
+          <topicName>Revolute6_ft</topicName>
+          <jointName>Revolute6</jointName>
+      </plugin>
+  </gazebo>
+
+</robot>

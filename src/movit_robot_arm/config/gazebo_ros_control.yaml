@@ -1,0 +1,8 @@
+gazebo_ros_control/pid_gains:
+  Revolute1: {p: 1000.0, i: 1000.0, d: 1000.0}
+  Revolute2: {p: 1000.0, i: 1000.0, d: 1000.0}
+  Revolute3: {p: 1000.0, i: 1000.0, d: 1000.0}
+  Revolute4: {p: 1000.0, i: 1000.0, d: 1000.0}
+  Revolute5: {p: 1000.0, i: 1000.0, d: 1000.0}
+  Revolute6: {p: 1000.0, i: 1000.0, d: 1000.0}
+  Slider9: {p: 1000.0, i: 1000.0, d: 1000.0}

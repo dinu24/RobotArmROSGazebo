@@ -1,0 +1,9 @@
+ros1
+moveit
+sudo apt-get install python3-catkin-tools
+
+
+sudo apt-get install ros*controller*
+
+ln -s /usr/include/eigen3/Eigen /usr/include/Eigen
+
